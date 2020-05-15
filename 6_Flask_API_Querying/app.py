@@ -29,7 +29,7 @@ A bit on ethical scraping https://towardsdatascience.com/ethics-in-web-scraping-
 
 The Towards Data Science posts tagged with "Python Flask" https://towardsdatascience.com/tagged/python-flask
 
-To answer Jewell's question that she had regarding the ability to pass 
+To answer a student's question that she had regarding the ability to pass 
 default function parameters in from app routes I wanted to include this.
 Look at the answer with 178 upvotes (it is basically the same as the one with
 ~330 upvotes but they make it slightly less complex-looking). You'd have to have it
