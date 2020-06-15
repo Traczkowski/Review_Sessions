@@ -64,7 +64,8 @@ else {
 
 
 /*Want to take a moment to briefly talk about if/elseif/else statements in javascript, and then will
-also pack up a function to check for grades*/
+also pack up a function to check for grades
+https://www.w3schools.com/js/js_switch.asp*/
 
 var grade_val = 92;
 
@@ -199,7 +200,7 @@ https://www.educba.com/python-vs-javascript/
 
 https://htmlcheatsheet.com/js/
 
-I will say that I'm far from the best JS coder so the amount of lessons you can learn from the internet far outstrip what I can teach you, try to get in the habit of taking a look at 
+I will say that I'm far from the best JS coder so the amount of lessons you can learn from the internet far outstrip what I can teach you, try to get in the habit of taking a look at different pages and seeing what functions are being called, that can always help. 
 */
 
 
