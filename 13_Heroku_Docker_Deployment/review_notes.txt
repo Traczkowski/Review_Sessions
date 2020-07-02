@@ -1,10 +1,34 @@
-This is a readme for a sample docker image, it is made purely as an example of how to bring in a requirements.txt, install a few libraries, and then run a sample .py file, this is obviously far from "production-ready", but only in a logical sense, you could pick up this image, plop it into AWS or some other tool, and it could run, although it would do shockingly little.
+This is a readme for a sample docker image, it is made purely as an example 
+of how to bring in a requirements.txt, install a few libraries, and then run 
+a sample .py file, this is obviously far from "production-ready", but only in
+a logical sense, you could pick up this image, plop it into AWS or some other
+tool, and it could run, although it would do shockingly little.
 
 Some notes on Docker today...
 
-Docker is a tool that is used for containerizing code. Do you know how annoying it is when you have code that works on your machine, and then I download it on github and there's something that doesn't work and then we have to have a chat about it? It's not that bad, but now imagine that happening thousands of times in different parts of a company constantly. A huge part of the Docker value-add is the idea that it wraps something up with a nice bow, so theoretically, anybody with a computer that has Docker installed on it (and enough RAM, hard drive space, and processing power!!!) should be able to get a container from you, run it, and it should *just works* So in-short, Docker is software that helps with virtualization and 
+Docker is a tool that is used for containerizing code. Do you know how annoying
+it is when you have code that works on your machine, and then I download it on 
+github and there's something that doesn't work and then we have to have a chat 
+about it? It's not that bad, but now imagine that happening thousands of times 
+in different parts of a company constantly. A huge part of the Docker value-add 
+is the idea that it wraps something up with a nice bow, so theoretically, anybody
+with a computer that has Docker installed on it (and enough RAM, hard drive space,
+and processing power!!!) should be able to get a container from you, run it, and
+it should *just works* So in-short, Docker is software that helps with virtualization.
 
-We're going to be talking about a ton of different components of Docker and the development pipeline today. The reason that we're going to do that is to bring forward the idea of "putting things into production", "deployment", and the concept of "CICD". I do this because we are going to be deploying to Heroku this week in class and some of you may want some additional context around what that means, especially when you're going to be working on your projects. Up until not long ago, any time I'd hear about something "in production" (as opposed to a messy Jupyter notebook that I couldn't even get to consistently run on my system), it seemed like some wild concept and like it was genuinely unattainable, but the truth is that as you develop your fundamentals, you're already learning how to build production-ready code, so don't let this concept scare you and follow along! You can learn how to work with Docker in a few days using little more than their own documentation and a few blogposts!
+We're going to be talking about a ton of different components of Docker and
+the development pipeline today. The reason that we're going to do that is to
+bring forward the idea of "putting things into production", "deployment", and
+the concept of "CICD". I do this because we are going to be deploying to Heroku
+this week in class and some of you may want some additional context around what
+that means, especially when you're going to be working on your projects. Up until
+not long ago, any time I'd hear about something "in production" (as opposed to a 
+messy Jupyter notebook that I couldn't even get to consistently run on my system), 
+it seemed like some wild concept and like it was genuinely unattainable, but the 
+truth is that as you develop your fundamentals, you're already learning how to build
+production-ready code, so don't let this concept scare you and follow along! You can
+learn how to work with Docker in a few days using little more than their own documentation
+and a few blogposts!
 
 
 Intro...
@@ -26,11 +50,23 @@ Docker vs Heroku
 https://codefresh.io/docker-tutorial/move-heroku-docker/
 
 
-NOTE: I recommend against trying to install at this point and would recommend that you just follow along for now because it may take a bit of time to do initial installation and I'd hate for anybody to get bogged down trying to fix something instead of just getting a feel for it at this point, there's plenty of time to learn how to do that later, I just want to hit a bunch of concepts for now...
+NOTE: I recommend against trying to install at this point and would recommend 
+that you just follow along for now because it may take a bit of time to do initial 
+installation and I'd hate for anybody to get bogged down trying to fix something 
+instead of just getting a feel for it at this point, there's plenty of time to learn
+how to do that later, I just want to hit a bunch of concepts for now...
 
 --------------------
 
-1. First Image/Container - We are going to build a container that will install a vanilla copy of Ubuntu Linux on my machine to essentially build a "system within a system", but the way that Docker works makes this easy and it is treated like a single process, like running a tab of Chrome or Word or whatever. This used to be a significantly harder process in the past with the concept of "Virtual Machines", but has been simplified significantly by Docker (There is debate as to whether or not this is a good or bad thing, I happen to be on the team that likes this, but there are devs out there who believe virtual machines to be much more efficient at what they do.)
+1. First Image/Container - We are going to build a container that will install a
+vanilla copy of Ubuntu Linux on my machine to essentially build a "system within
+a system", but the way that Docker works makes this easy and it is treated like
+a single process, like running a tab of Chrome or Word or whatever. This used 
+to be a significantly harder process in the past with the concept of "Virtual Machines"
+, but has been simplified significantly by Docker (There is debate as to whether 
+or not this is a good or bad thing, I happen to be on the team that likes this, 
+but there are devs out there who believe virtual machines to be much more efficient 
+at what they do.)
 
 Docker Images vs. Containers
 https://stackify.com/docker-image-vs-container-everything-you-need-to-know/
@@ -55,15 +91,41 @@ https://docs.docker.com/engine/reference/commandline/run/
 https://medium.com/@hudsonmendes/docker-have-a-ubuntu-development-machine-within-seconds-from-windows-or-mac-fd2f30a338e4
 
 
-You can just pull the latest version (which is the default behavior), or specify a cerain version, so long as that image is still being serviced, you can always try to pull that older version which may make life simpler, and could prevent updates from breaking everything with your configuration, you will be able to pull it without any issues. There are obviously benefits to running the newest version, but it may affect your stability in the long run (imagine I'm always jumping on your computer and updating everything without giving you the option to update your actual code, if the way a function works changes in a new release, you would be pretty mad if I broke everything). Depending on what your needs are, you mnay want to use the latest version of an image whenever a container is built (for example, if you need the latest security updates), or you may choose to build a container consistently with a specific version of an image or operating system if you know that your system is fairly secure/not touching secure data/stability is the most important component.
+You can just pull the latest version (which is the default behavior), or
+specify a cerain version, so long as that image is still being serviced, 
+you can always try to pull that older version which may make life simpler,
+and could prevent updates from breaking everything with your configuration,
+you will be able to pull it without any issues. There are obviously benefits
+to running the newest version, but it may affect your stability in the long 
+run (imagine I'm always jumping on your computer and updating everything without
+giving you the option to update your actual code, if the way a function works 
+changes in a new release, you would be pretty mad if I broke everything). 
+Depending on what your needs are, you mnay want to use the latest version of 
+an image whenever a container is built (for example, if you need the latest security
+updates), or you may choose to build a container consistently with a specific version
+of an image or operating system if you know that your system is fairly secure/not
+touching secure data/stability is the most important component.
 
-Once we've pulled the image and run the command above, we appear within the container, which you could imagine as a fresh computer that you just bought with Ubuntu Linux installed on it, but with no GUI (get used to this!!!) and literally nothing else. On one hand this is awesome, on the other it may be kind of useless depending on your needs, so lets do something with it!
+Once we've pulled the image and run the command above, we appear within the
+container, which you could imagine as a fresh computer that you just bought
+with Ubuntu Linux installed on it, but with no GUI (get used to this!!!) and
+literally nothing else. On one hand this is awesome, on the other it may be
+kind of useless depending on your needs, so lets do something with it!
 
 --------------------
 
 2. A slightly more full-featured container...
 
-While the first container we've ever built was pretty awesome in that it taught us how to pull an image and actually get it to run, we didn't really have much going on in there other than CDing around a little bit and looking around. This second image will be built from what's called a Dockerfile. This is an important component to Docker. Dockerfiles are one of the things that makes Docker go from a tool that lets you just open a terminal in a (mostly) separate universe from your own computer (big deal), to something that allows you to build a full-featured machine which will automatically pull updates, install things, run scripts, send emails, host databases, connect to outside machines, etc. etc. etc. The Dockerfile is an incredibly powerful thing if it is set up properly.
+While the first container we've ever built was pretty awesome in that it taught
+us how to pull an image and actually get it to run, we didn't really have much
+going on in there other than CDing around a little bit and looking around. This
+second image will be built from what's called a Dockerfile. This is an important
+component to Docker. Dockerfiles are one of the things that makes Docker go from
+a tool that lets you just open a terminal in a (mostly) separate universe from your
+own computer (big deal), to something that allows you to build a full-featured
+machine which will automatically pull updates, install things, run scripts, send
+emails, host databases, connect to outside machines, etc. etc. etc. The Dockerfile
+is an incredibly powerful thing if it is set up properly.
 
 Dockerfile Reference
 https://docs.docker.com/engine/reference/builder/
@@ -76,9 +138,20 @@ https://thenewstack.io/docker-basics-how-to-use-dockerfiles/
 
 
 
-We will take a look at a custom Dockerfile I built. This is used to build an image, and then when the image is built, we are able to run a container based on that image. When that container is run, it will "tool the machine" that we are either going to want to log into, or it will run something automatically on its own with no human input whatsoever (depending on the needs of the organization). This specific Dockerfile will build a container, install Python as well as some packages using pip, and then there will be a Jupyter notebook that is going to be run within that container automatically by a package called Papermill (which is used to parametrize notebooks https://papermill.readthedocs.io/en/latest/). This extremely limited/fake setup was inspired by some articles I read about how Netflix is doing ETL these days, depending on what point in the course you're on, I'm sure that you can imagine so many different usecases for automated notebooks running in an automated container.
+We will take a look at a custom Dockerfile I built. This is used to build an image,
+and then when the image is built, we are able to run a container based on that image.
+When that container is run, it will "tool the machine" that we are either going to
+want to log into, or it will run something automatically on its own with no human
+input whatsoever (depending on the needs of the organization). This specific Dockerfile
+will build a container, install Python as well as some packages using pip, and then there
+will be a Jupyter notebook that is going to be run within that container automatically
+by a package called Papermill (which is used to parametrize notebooks https://papermill.readthedocs.io/en/latest/).
+This extremely limited/fake setup was inspired by some articles I read about how Netflix
+is doing ETL these days, depending on what point in the course you're on, I'm sure that
+you can imagine so many different usecases for automated notebooks running in an automated container.
 
-Netflix Jupyter Notebook Use-cases (They use Docker, Papermill, and Jupyter Notebooks for ETL and just about everything else at this point if these two articles are to be believed...)
+Netflix Jupyter Notebook Use-cases (They use Docker, Papermill, and Jupyter Notebooks
+for ETL and just about everything else at this point if these two articles are to be believed...)
 
 https://netflixtechblog.com/notebook-innovation-591ee3221233
 
@@ -87,15 +160,21 @@ https://netflixtechblog.com/scheduling-notebooks-348e6c14cfd6 (check out the ill
 
 > docker build . -t class_test
 https://docs.docker.com/engine/reference/commandline/build/
-(builds from the dockerfile in the location "." This can be replaced with another path, but I recommend that you CD into the directory where your dockerfile and everything else lives before you run anything Docker-related at first...)
+(builds from the dockerfile in the location "." This can be replaced with another
+path, but I recommend that you CD into the directory where your dockerfile and everything
+else lives before you run anything Docker-related at first...)
 
 > docker exec -it "CONTAINERNAME" /bin/bash
 https://docs.docker.com/engine/reference/commandline/exec/
-This will start an interactive bash terminal inside the machine (so we can peek in and see what is going on in there...)
+This will start an interactive bash terminal inside the machine (so we can peek
+in and see what is going on in there...)
 
 > docker cp admiring_roentgen:/TDirectory SOME/LOCAL/PATH
 https://docs.docker.com/engine/reference/commandline/cp/
-This command allows us to copy things into or out of a container running on our machine (assuming that all of the permissions on the files and containers are set properly, it looks like this works by default, but I'd guess that there are many ways to set up containers which could prevent this sort of thing from working as easily)
+This command allows us to copy things into or out of a container running on our
+machine (assuming that all of the permissions on the files and containers are set
+properly, it looks like this works by default, but I'd guess that there are many
+ways to set up containers which could prevent this sort of thing from working as easily)
 
 So now you can see that there is so much more that a container can do with a properly-configured Dockerfile!
 
@@ -103,9 +182,34 @@ So now you can see that there is so much more that a container can do with a pro
 
 3. Superset Container
 
-Finally, one of the most compelling use-cases out there is to use a custom Docker image that other users have built and host on dockerhub. WORD OF WARNING, although I've never personally come across any malicious Dockerfiles on there, you will want to definitely keep an eye on whatever you run as it can give the container access to the host machine's filestructure (which can become a problem if someone has built a malicious image) or cause other issues. I mention this because I think it's important to note that there are definitely some scary things out there, but again, I have worked with a lot of different images at this point and I've never personally come accross anything that has broken anything, stolen anything, etc. and I intend to keep it that way...
+Finally, one of the most compelling use-cases out there is to use a custom Docker
+image that other users have built and host on dockerhub. WORD OF WARNING, although
+I've never personally come across any malicious Dockerfiles on there, you will want
+to definitely keep an eye on whatever you run as it can give the container access to
+the host machine's filestructure (which can become a problem if someone has built a
+malicious image) or cause other issues. I mention this because I think it's important
+to note that there are definitely some scary things out there, but again, I have worked
+with a lot of different images at this point and I've never personally come accross
+anything that has broken anything, stolen anything, etc. and I intend to keep it that way...
 
-So we're going to be building a container that runs Apache Superset, which iis opensource visualization software that was developed initially at AirBnB and has been taken on by Apache in more recent years. Docker is especially useful for this sort of thing because I have found Superset to be a complete pain to install manually, and failed installs for WEEKS before just finding out that you can use a Docker image and have the thing build in a few minutes with next to no effort on my part. Superset can connect to all sorts of different types of Databases and makes life easy for dataviz. NOTE: You will need a pretty solid machine to do anything beyond the basics with Superset, but with that said, it can scale extremely well up to an enterprise-level if you use it properly (I haven't used it yet in production and only built a few ad-hoc visualizations in the past, but am hoping to change that). One of the most awesome things about a lot of these tools like Superset, Druid, etc. is that they have a built-out front-end that you can use through nearly any web browser (Much like a Jupyter Notebook), so after you get through some initial setup it feels like an extremely polished experience. In Superset specifically, you can create users with different levels of permission, etc. It is a fantastic data viz tool that can be used in lieu of much more expensive competitors (although, ponying up for one of those paid competitors can save you quite a bit of headache in the long-run and this solution is absolutely not for everyone.) I'm showing this tool to show that there are open-source alternatives out there, 
+So we're going to be building a container that runs Apache Superset, which iis opensource
+visualization software that was developed initially at AirBnB and has been taken on by
+Apache in more recent years. Docker is especially useful for this sort of thing because I
+have found Superset to be a complete pain to install manually, and failed installs for WEEKS
+before just finding out that you can use a Docker image and have the thing build in a few
+minutes with next to no effort on my part. Superset can connect to all sorts of different types
+of Databases and makes life easy for dataviz. NOTE: You will need a pretty solid machine to do
+anything beyond the basics with Superset, but with that said, it can scale extremely well up
+to an enterprise-level if you use it properly (I haven't used it yet in production and only built
+a few ad-hoc visualizations in the past, but am hoping to change that). One of the most awesome
+things about a lot of these tools like Superset, Druid, etc. is that they have a built-out
+front-end that you can use through nearly any web browser (Much like a Jupyter Notebook), so after
+you get through some initial setup it feels like an extremely polished experience. In Superset
+specifically, you can create users with different levels of permission, etc. It is a fantastic
+data viz tool that can be used in lieu of much more expensive competitors (although, ponying up
+for one of those paid competitors can save you quite a bit of headache in the long-run and this
+solution is absolutely not for everyone.) I'm showing this tool to show that there
+are open-source alternatives out there, 
 
 
 Apache Superset Docs
@@ -114,7 +218,8 @@ https://superset.incubator.apache.org/installation.html#upgrading
 Superset Official Github Page
 https://github.com/apache/incubator-superset
 
-Image I'll be working with (Use at your own risk this is not the official Superset image just one that's a little easier to work with!)
+Image I'll be working with (Use at your own risk this is not the official
+Superset image just one that's a little easier to work with!)
 https://hub.docker.com/r/amancevice/superset/dockerfile
 
 Integrating Superset with Postgres DB using Docker
@@ -123,15 +228,17 @@ https://medium.com/@vantakusaikumar562/integrating-superset-with-postgres-databa
 Connecting to a DB running on Host Machine
 https://nickjanetakis.com/blog/docker-tip-35-connect-to-a-database-running-on-your-docker-host
 
-Though I will not be covering them explicitly, the concept of setting up a network for your docker containers as well as shared storage between containers is very important and I'm sure you can imagine it as a natural outgrowth of the concepts we've discussed today.
+Though I will not be covering them explicitly, the concept of setting
+up a network for your docker containers as well as shared storage
+between containers is very important and I'm sure you can imagine it
+as a natural outgrowth of the concepts we've discussed today.
 https://docs.docker.com/network/
 https://docs.docker.com/storage/volumes/
 
 
 
 
-
-Taking it a step further to building several containersa at once with Kubernetes
+Taking it a step further and building several containers at once can be done with Kubernetes
 https://kubernetes.io/
 
 
